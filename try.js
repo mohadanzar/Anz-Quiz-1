@@ -316,7 +316,20 @@ function loadQuestion(currentCategory) {
     });
 
     currentQuestionElement.textContent = currentQuestionIndex + 1;
-    totalQuestionsElement.textContent = currentCategory.questions.length;
+    totalQuestionsElement.textContent = currentCategory.questions.length ;
+    
+}
+
+function handleTimeout() {
+    wrongAnswers++;
+    currentQuestionIndex++;
+    
+    if (currentQuestionIndex >= currentCategory.questions.length) {
+        return endQuiz();
+    }
+    
+    loadQuestion(currentCategory);
+    startTimer();
 }
 
 function startTimer() {
@@ -331,7 +344,7 @@ function startTimer() {
 
         if (timeLeft <= 0) {
             clearInterval(timerInterval);
-            handleTimeout(null);
+            handleTimeout();
         }
     }, 1000);
 }
@@ -348,7 +361,7 @@ function handleAnswer(selected, currentCategory) {
     }
 
     currentQuestionIndex++;
-    loadQuestion();
+    loadQuestion(currentCategory);
     startTimer();
 }
 
