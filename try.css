@@ -1,0 +1,228 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+}
+
+body {
+    background-color: #f3e8ff;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+}
+
+.container {
+    width: 100%;
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.screen {
+    background: white;
+    border-radius: 16px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    padding: 32px;
+}
+
+.hidden {
+    display: none;
+}
+
+/* Home Screen Styles */
+.title {
+    font-size: 32px;
+    font-weight: bold;
+    text-align: center;
+    color: #1f2937;
+    margin-bottom: 16px;
+}
+
+.quote {
+    text-align: center;
+    color: #6b7280;
+    font-style: italic;
+    margin-bottom: 32px;
+}
+
+.category-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+    margin-bottom: 24px;
+}
+
+.category-button {
+    background: #9333ea;
+    color: white;
+    border: none;
+    padding: 16px;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.category-button:hover {
+    background: #7e22ce;
+}
+
+.category-button.active {
+    background: #39006b;
+    transform: scale(0.98);
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.begin-button {
+    width: 100%;
+    background: #14b8a6;
+    color: white;
+    border: none;
+    padding: 16px;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.begin-button:hover:not(.disabled) {
+    background: #0d9488;
+}
+
+.begin-button.disabled {
+    background: #cbd5e1;
+    cursor: not-allowed;
+}
+
+/* Rules Screen Styles */
+.rules-title {
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 24px;
+    color: #1f2937;
+}
+
+.rules-list {
+    list-style: none;
+    margin-bottom: 24px;
+}
+
+.rules-list li {
+    background: #f9fafb;
+    padding: 16px;
+    margin-bottom: 8px;
+    border-radius: 8px;
+    color: #4b5563;
+}
+
+/* Quiz Screen Styles */
+.quiz-header {
+    background: #9333ea;
+    margin: -32px -32px 24px -32px;
+    padding: 16px 32px;
+    border-radius: 16px 16px 0 0;
+    display: flex;
+    justify-content: space-between;
+    color: white;
+    font-weight: 600;
+}
+
+.question {
+    font-size: 20px;
+    color: #1f2937;
+    text-align: center;
+    margin-bottom: 24px;
+}
+
+.options-container {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-bottom: 24px;
+}
+
+.option {
+    width: 100%;
+    padding: 16px;
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+    background: white;
+    text-align: left;
+    font-size: 16px;
+    color: #4b5563;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.option:hover {
+    background: #f9fafb;
+    border-color: #9333ea;
+}
+
+.question-counter {
+    text-align: center;
+    color: #6b7280;
+    font-size: 14px;
+}
+
+/* Result Screen Styles */
+.result-title {
+    font-size: 24px;
+    font-weight: bold;
+    text-align: center;
+    margin-bottom: 24px;
+    color: #1f2937;
+}
+
+.result-details {
+    margin-bottom: 32px;
+}
+
+.result-details p {
+    margin-bottom: 12px;
+    color: #4b5563;
+    font-size: 16px;
+}
+
+.result-details span {
+    font-weight: 600;
+    color: #1f2937;
+}
+
+.result-actions {
+    display: flex;
+    gap: 16px;
+    justify-content: center;
+}
+
+.result-button {
+    padding: 12px 24px;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.3s ease;
+}
+
+.retry-button {
+    background: #9333ea;
+    color: white;
+    border: none;
+}
+
+.retry-button:hover {
+    background: #7e22ce;
+}
+
+.home-button {
+    background: #4b5563;
+    color: white;
+    border: none;
+}
+
+.home-button:hover {
+    background: #374151;
+}
