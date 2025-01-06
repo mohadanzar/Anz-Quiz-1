@@ -64,6 +64,12 @@ h1, h2 {
     border: 2px solid #4c1d95;
 }
 
+.home-P{
+    text-align: center;
+    align-items: center;
+    justify-content: center;
+}
+
 .btn {
     width: 100%;
     padding: 1rem;
