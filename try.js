@@ -1,5 +1,10 @@
-// Quiz Data
+// Quiz Data remains the same as above, including the React category question about 'key' prop
+// Let's complete that question and continue with the rest of the implementation
+
+// Complete the last React question that was cut off
 const quizData = [
+    // ... HTML, CSS, JavaScript categories remain the same ...
+    
     {
         category: "HTML",
         questions: [
@@ -13,7 +18,6 @@ const quizData = [
                 },
                 correct: "a",
             },
-            
             {
                 question: "What is the purpose of the <title> tag in HTML?",
                 options: {
@@ -69,7 +73,6 @@ const quizData = [
                 },
                 correct: "a",
             },
-            
             {
                 question: "Which property is used to change the background color in CSS?",
                 options: {
@@ -167,8 +170,8 @@ const quizData = [
             },
         ],
     },
-
     {
+
         category: "React",
         questions: [
             {
@@ -192,7 +195,7 @@ const quizData = [
                 correct: "a",
             },
             {
-                question: "Which method is used to update state in a functional component?", 
+                question: "Which hook updates state in functional components?", 
                 options: {
                     a: "setState()",  
                     b: "updateState()",  
@@ -202,7 +205,7 @@ const quizData = [
                 correct: "c",
             },
             {
-                question: "What is the purpose of the 'key' attribute in React lists?",
+                question: "What is the purpose of the 'key' prop in lists?",
                 options: {
                     a: "To add custom styles",  
                     b: "To uniquely identify list items",  
@@ -212,18 +215,19 @@ const quizData = [
                 correct: "b",
             },
             {
-                question: "What is JSX in React?", 
+                question: "What is JSX?", 
                 options: {
                     a: "JavaScript XML",  
                     b: "JavaScript Extension",  
-                    c: "JSON-like Syntax",  
-                    d: "JavaScript Syntax Editor",
+                    c: "JSON XML",  
+                    d: "JavaScript Syntax",
                 },
                 correct: "a",
-            },
+            }
         ],
-    },
+    }
 ];
+
 
 // Global Variables
 let currentCategory = null;
@@ -231,6 +235,8 @@ let currentQuestionIndex = 0;
 let correctAnswers = 0;
 let wrongAnswers = 0;
 let timerInterval = null;
+let timeLeft = 15;
+let isAnswerSelected = false;
 
 // DOM Elements
 const homeScreen = document.getElementById("home-screen");
@@ -248,7 +254,7 @@ const finalScoreElement = document.getElementById("final-score");
 const correctAnswersElement = document.getElementById("correct-answers");
 const wrongAnswersElement = document.getElementById("wrong-answers");
 const timeTakenElement = document.getElementById("time-taken");
-
+const progressBarFill = document.getElementById("progress-bar-fill");
 
 // Event Listeners
 document.querySelectorAll('.category-button').forEach(button => {
@@ -257,52 +263,36 @@ document.querySelectorAll('.category-button').forEach(button => {
             btn.classList.remove('active');
         });
         button.classList.add('active');
-        const val = quizData.find(cat => cat.category === button.dataset.category);
-       
-        currentCategory = val;
-        console.log("jasn", val, currentCategory)
+        currentCategory = quizData.find(cat => cat.category === button.dataset.category);
         beginButton.disabled = false;
         beginButton.classList.remove('disabled');
-        return currentCategory;
     });
 });
 
-beginButton.addEventListener("click", () => {
-    if (currentCategory) {
-        console.log("innn", currentCategory)
-        showRules(currentCategory);
-    }
-});
-
-// document.getElementById("start-quiz-btn").addEventListener("click", startQuiz);
+beginButton.addEventListener("click", showRules);
+document.getElementById("start-quiz-btn").addEventListener("click", () => startQuiz());
 document.getElementById("retry-btn").addEventListener("click", restartQuiz);
 document.getElementById("home-btn").addEventListener("click", goToHome);
 
 // Functions
-function showRules(data) {
-    console.log("inasd", data)
+function showRules() {
     homeScreen.classList.add("hidden");
     rulesScreen.classList.remove("hidden");
 }
 
-const startQuizs = () => {
-    startQuiz(currentCategory)
-}
-
-function startQuiz(currentCategorys) {
+function startQuiz() {
     rulesScreen.classList.add("hidden");
     quizScreen.classList.remove("hidden");
-
-    loadQuestion(currentCategorys);
+    loadQuestion();
     startTimer();
 }
 
-function loadQuestion(currentCategory) {
+function loadQuestion() {
     if (currentQuestionIndex >= currentCategory.questions.length) {
         return endQuiz();
     }
 
-    
+    isAnswerSelected = false;
     const currentQuestion = currentCategory.questions[currentQuestionIndex];
     questionElement.textContent = currentQuestion.question;
     optionsContainer.innerHTML = "";
@@ -311,30 +301,33 @@ function loadQuestion(currentCategory) {
         const button = document.createElement("button");
         button.className = "option";
         button.textContent = value;
-        button.addEventListener("click", () => handleAnswer(key, currentCategory));
+        button.dataset.key = key;
+        button.addEventListener("click", () => {
+            if (!isAnswerSelected) {
+                handleAnswer(key);
+            }
+        });
         optionsContainer.appendChild(button);
     });
 
-    currentQuestionElement.textContent = currentQuestionIndex + 1;
-    totalQuestionsElement.textContent = currentCategory.questions.length ;
-    
+    updateProgressBar();
+    updateQuestionInfo();
 }
 
-function handleTimeout() {
-    wrongAnswers++;
-    currentQuestionIndex++;
-    
-    if (currentQuestionIndex >= currentCategory.questions.length) {
-        return endQuiz();
-    }
-    
-    loadQuestion(currentCategory);
-    startTimer();
+function updateProgressBar() {
+    const progress = (currentQuestionIndex / currentCategory.questions.length) * 100;
+    progressBarFill.style.width = `${progress}%`;
+}
+
+function updateQuestionInfo() {
+    currentQuestionElement.textContent = currentQuestionIndex + 1;
+    totalQuestionsElement.textContent = currentCategory.questions.length;
 }
 
 function startTimer() {
-    let timeLeft = 5;
+    timeLeft = 15;
     timerElement.textContent = timeLeft;
+    timerElement.classList.remove('warning');
 
     if (timerInterval) clearInterval(timerInterval);
 
@@ -342,31 +335,75 @@ function startTimer() {
         timeLeft--;
         timerElement.textContent = timeLeft;
 
-        if (timeLeft <= 0) {
+        if (timeLeft <= 5) {
+            timerElement.classList.add('warning');
+        }
+
+        if (timeLeft === 0) {
             clearInterval(timerInterval);
-            handleTimeout();
+            if (!isAnswerSelected) {
+                handleTimeout();
+            }
         }
     }, 1000);
 }
 
-function handleAnswer(selected, currentCategory) {
-    clearInterval(timerInterval);
-    const currentQuestion = currentCategory.questions[currentQuestionIndex];
+function handleAnswer(selected) {
+    if (isAnswerSelected) return;
     
+    isAnswerSelected = true;
+    clearInterval(timerInterval);
+    
+    const currentQuestion = currentCategory.questions[currentQuestionIndex];
+    const selectedButton = optionsContainer.querySelector(`[data-key="${selected}"]`);
+    const correctButton = optionsContainer.querySelector(`[data-key="${currentQuestion.correct}"]`);
+    
+    // Disable all options
+    optionsContainer.querySelectorAll('.option').forEach(button => {
+        button.disabled = true;
+    });
+
     if (selected === currentQuestion.correct) {
         correctAnswers++;
         scoreElement.textContent = correctAnswers;
+        selectedButton.classList.add('correct-answer');
+        showFeedback("Correct!", "feedback-correct");
     } else {
         wrongAnswers++;
+        selectedButton.classList.add('wrong-answer');
+        correctButton.classList.add('correct-answer');
+        showFeedback("Incorrect! The correct answer was: " + 
+            currentQuestion.options[currentQuestion.correct], "feedback-wrong");
     }
 
-    currentQuestionIndex++;
-    loadQuestion(currentCategory);
-    startTimer();
+    setTimeout(moveToNextQuestion, 2000);
 }
 
 function handleTimeout() {
+    isAnswerSelected = true;
+    const currentQuestion = currentCategory.questions[currentQuestionIndex];
+    const correctButton = optionsContainer.querySelector(`[data-key="${currentQuestion.correct}"]`);
+    
     wrongAnswers++;
+    correctButton.classList.add('correct-answer');
+    showFeedback("Time's up! The correct answer was: " + 
+        currentQuestion.options[currentQuestion.correct], "feedback-timeout");
+    
+    // Disable all options
+    optionsContainer.querySelectorAll('.option').forEach(button => {
+        button.disabled = true;
+    });
+
+    setTimeout(moveToNextQuestion, 2000);
+}
+
+function showFeedback(message, className) {
+    const feedbackElement = document.getElementById("question-feedback");
+    feedbackElement.textContent = message;
+    feedbackElement.className = `feedback ${className}`;
+}
+
+function moveToNextQuestion() {
     currentQuestionIndex++;
     loadQuestion();
     startTimer();
@@ -376,21 +413,35 @@ function endQuiz() {
     clearInterval(timerInterval);
     quizScreen.classList.add("hidden");
     resultScreen.classList.remove("hidden");
+
+    const totalQuestions = currentCategory.questions.length;
+    const percentage = (correctAnswers / totalQuestions) * 100;
     
-    finalScoreElement.textContent = correctAnswers;
+    finalScoreElement.textContent = `${percentage.toFixed(1)}%`;
     correctAnswersElement.textContent = correctAnswers;
     wrongAnswersElement.textContent = wrongAnswers;
-    timeTakenElement.textContent = currentQuestionIndex * 20;
+    timeTakenElement.textContent = `${(totalQuestions * 15) - timeLeft}`;
 }
 
 function restartQuiz() {
-    resetQuizState();
+    currentQuestionIndex = 0;
+    correctAnswers = 0;
+    wrongAnswers = 0;
+    scoreElement.textContent = "0";
+    
     resultScreen.classList.add("hidden");
-    rulesScreen.classList.remove("hidden");
+    quizScreen.classList.remove("hidden");
+    
+    loadQuestion();
+    startTimer();
 }
 
 function goToHome() {
-    resetQuizState();
+    currentQuestionIndex = 0;
+    correctAnswers = 0;
+    wrongAnswers = 0;
+    currentCategory = null;
+    
     resultScreen.classList.add("hidden");
     homeScreen.classList.remove("hidden");
     
@@ -399,12 +450,4 @@ function goToHome() {
     });
     beginButton.disabled = true;
     beginButton.classList.add('disabled');
-}
-
-function resetQuizState() {
-    currentQuestionIndex = 0;
-    correctAnswers = 0;
-    wrongAnswers = 0;
-    scoreElement.textContent = "0";
-    clearInterval(timerInterval);
 }

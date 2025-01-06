@@ -3,67 +3,74 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Technical Quiz</title>
-    <link rel="stylesheet" href="try.css">
+    <title>Quiz Application</title>
+    <link rel="stylesheet" href="/try.css">
 </head>
 <body>
-    <div class="container">
-        <!-- Home Screen -->
-        <div id="home-screen" class="screen">
-            <h1 class="title">Technical Quiz</h1>
-            <p class="quote">"In the world of technology, knowledge is power."</p>
-            <div class="category-grid">
-                <button class="category-button" data-category="HTML">HTML</button>
-                <button class="category-button" data-category="CSS">CSS</button>
-                <button class="category-button" data-category="JavaScript">JavaScript</button>
-                <button class="category-button" data-category="React">React</button>
-            </div>
-            <button class="begin-button disabled" id="begin-btn" disabled>BEGIN CHALLENGE</button>
+    <!-- Home Screen -->
+    <div id="home-screen" class="screen">
+        <h1>Welcome to the Quiz!</h1>
+        <div class="categories">
+            <button class="category-button" data-category="HTML">HTML</button>
+            <button class="category-button" data-category="CSS">CSS</button>
+            <button class="category-button" data-category="JavaScript">JavaScript</button>
+            <button class="category-button" data-category="React">React</button>
         </div>
+        <button id="begin-btn" class="btn disabled" disabled>Begin Quiz</button>
+    </div>
 
-        <!-- Rules Screen -->
-        <div id="rules-screen" class="screen hidden">
-            <h2 class="rules-title">Challenge Guidelines</h2>
-            <ul class="rules-list">
-                <li>You have 20 seconds for each question</li>
-                <li>Each correct answer earns you one point</li>
-                <li>You cannot change your answer once selected</li>
-                <li>You can only select one answer per question</li>
-                <li>If you don't answer a question within time, it's considered wrong</li>
-                <li>The quiz ends when all questions are answered</li>
-            </ul>
-            <button class="category-button" id="start-quiz-btn" onclick="startQuizs()">START QUIZ</button>
+    <!-- Rules Screen -->
+    <div id="rules-screen" class="screen hidden">
+        <h2>Quiz Rules</h2>
+        <div class="rules">
+            <p> Each question has a 15-second time limit.</p>
+            <p> You can only select one answer per question.</p>
+            <p> Once an answer is selected, it cannot be changed.</p>
+            <p> If you don't answer a question within time, it's considered wrong.</p>
+            <p> Each correct answer earns you one point </p>
+            <p> The quiz ends when all questions are answered.</p>
         </div>
+        <button id="start-quiz-btn" class="btn">Start Quiz</button>
+    </div>
 
-        <!-- Quiz Screen -->
-        <div id="quiz-screen" class="screen hidden">
-            <div class="quiz-header">
-                <div>Score: <span id="score">0</span></div>
-                <div>Time: <span id="timer">20</span></div>
+    <!-- Quiz Screen -->
+    <div id="quiz-screen" class="screen hidden">
+        <div class="quiz-header">
+            <div class="quiz-info">
+                <span>Question <span id="current-question">1</span>/<span id="total-questions">5</span></span>
+                <span>Score: <span id="score">0</span></span>
             </div>
-            <div class="question" id="question"></div>
-            <div class="options-container" id="options"></div>
-            <div class="question-counter">
-                Question <span id="current-question">1</span> of <span id="total-questions">5</span>
+            <div class="timer">
+                Time Left: <span id="timer">15</span>s
             </div>
         </div>
+        
+        <div class="progress-bar">
+            <div id="progress-bar-fill" class="progress-bar-fill"></div>
+        </div>
 
-        <!-- Result Screen -->
-        <div id="result-screen" class="screen hidden">
-            <h2 class="result-title">Challenge Complete!</h2>
-            <div class="result-details">
-                <p>Your Total Score: <span id="final-score">0</span></p>
-                <p>Correct Answers: <span id="correct-answers">0</span></p>
-                <p>Wrong Answers: <span id="wrong-answers">0</span></p>
-                <p>Time Taken: <span id="time-taken">0</span> seconds</p>
-            </div>
-            <div class="result-actions">
-                <button class="result-button retry-button" id="retry-btn">Try Again</button>
-                <button class="result-button home-button" id="home-btn">Back to Home</button>
-            </div>
+        <div class="quiz-content">
+            <div id="question" class="question"></div>
+            <div id="options" class="options"></div>
+            <div id="question-feedback" class="feedback"></div>
         </div>
     </div>
 
-    <script src="try.js"></script>
+    <!-- Result Screen -->
+    <div id="result-screen" class="screen hidden">
+        <h2>Quiz Results</h2>
+        <div class="result-info">
+            <p>Final Score: <span id="final-score">0</span></p>
+            <p>Correct Answers: <span id="correct-answers">0</span></p>
+            <p>Wrong Answers: <span id="wrong-answers">0</span></p>
+            <p>Time Taken: <span id="time-taken">0</span></p>
+        </div>
+        <div class="result-buttons">
+            <button id="retry-btn" class="btn">Try Again</button>
+            <button id="home-btn" class="btn">Go Home</button>
+        </div>
+    </div>
+
+    <script src="/try.js"></script>
 </body>
 </html>
